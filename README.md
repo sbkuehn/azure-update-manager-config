@@ -1,0 +1,1 @@
+# azure-update-manager-scripts
