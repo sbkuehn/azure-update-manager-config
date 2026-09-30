@@ -47,6 +47,18 @@ After creating the maintenance configurations, run the assignment script for you
 
 Enter the resource group containing the VMs. The configuration resource group defaults to the VM resource group, and the configuration names default to `mc-windows-monthly` and `mc-linux-daily`. The script lists VMs only in the selected VM resource group, assigns Windows VMs to the Windows configuration and Linux VMs to the Linux configuration, and reports any VMs with an unknown OS type without assigning them. It uses the stable assignment name `update-manager`, so rerunning it updates those assignments.
 
+## Enterprise Deployment
+
+The interactive scripts above remain available for manual use. For repeatable deployment, `infra/maintenance-configurations.bicep` defines the same Windows and Linux schedules as code. The GitHub Actions workflow validates both Bicep templates on pull requests and deploys the maintenance configurations only when manually dispatched. It does not run a scheduled pipeline; Azure Update Manager runs the recurring patch schedules.
+
+To enable the workflow, configure the GitHub `production` environment with required reviewers, add the repository variables `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, and `AZURE_SUBSCRIPTION_ID`, and configure an Azure federated credential for GitHub Actions OIDC. The target resource group must already exist, and the deployment identity needs permission to deploy maintenance configurations into it. Dispatch the workflow with the resource group, region, time zone, and schedule start date. The read-only what-if plan completes before the protected deployment job waits for approval.
+
+`infra/policy-assignment.bicep` assigns Microsoft's built-in **Schedule recurring updates using Azure Update Manager** policy to one subscription and one operating system. Deploy it once per OS with the corresponding maintenance configuration ARM ID. Use `locations`, `resourceGroups`, and `tagValues` to limit the target machines; for example, a `PatchRing=Pilot` tag can scope a rollout ring. The maintenance configuration must be in the same subscription as the targeted machines. For a multi-subscription estate, deploy a configuration and policy assignment in each subscription.
+
+The policy assignment uses a system-assigned identity. The template does not grant Contributor by default; set `grantContributorRole` to `true` only when approved, because the built-in policy declares Contributor at subscription scope for remediation. Otherwise, have the governance team grant the required role through its controlled RBAC process. The deployment identity needs permission to create policy assignments, and role-assignment permission if the optional grant is enabled.
+
+Azure Policy handles machine association and compliance. Azure Update Manager handles patch execution. Use separate configurations and policy assignments for OS and rollout rings so production machines can follow a controlled schedule after lower-risk rings.
+
 ## Schedule details
 
 The entered start date is used for both schedules. The Windows window starts at 22:00 and lasts 3 hours 55 minutes. The Linux window starts at 02:00 and lasts 2 hours. Both use the time zone you enter and reboot only if required.
