@@ -1,6 +1,6 @@
 # Azure Update Manager Maintenance Configurations
 
-Copyright (c) September 2026 
+Copyright (c) September 2026
 <br>Shannon Eldridge-Kuehn
 
 Create Azure Update Manager maintenance configurations for guest patching:
