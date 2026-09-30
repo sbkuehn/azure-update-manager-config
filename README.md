@@ -1,1 +1,1 @@
-# azure-update-manager-scripts
+# azure-update-manager-config
