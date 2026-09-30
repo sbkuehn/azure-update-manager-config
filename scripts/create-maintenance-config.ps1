@@ -98,7 +98,7 @@ $linuxBody = @{
         extensionProperties = @{ InGuestPatchMode = 'User' }
         maintenanceWindow   = @{
             startDateTime = "$startDate 02:00"
-            duration      = '02:00'
+            duration      = '03:55'
             recurEvery    = 'Day'
             timeZone      = $timeZone
         }

@@ -100,7 +100,7 @@ LINUX_BODY=$(cat <<JSON
     },
     "maintenanceWindow": {
       "startDateTime": "${START_DATE} 02:00",
-      "duration": "02:00",
+      "duration": "03:55",
       "recurEvery": "Day",
       "timeZone": "$TIME_ZONE"
     },

@@ -62,7 +62,7 @@ Azure Policy handles machine association and compliance. Azure Update Manager ha
 
 ## Schedule details
 
-The entered start date is used for both schedules. The Windows window starts at 22:00 and lasts 3 hours 55 minutes. The Linux window starts at 02:00 and lasts 2 hours. Both use the time zone you enter and reboot only if required.
+The entered start date is used for both schedules. The Windows window starts at 22:00 and lasts 3 hours 55 minutes. The Linux window starts at 02:00 and lasts 3 hours 55 minutes. Both use the time zone you enter and reboot only if required.
 
 Windows patch classifications: Critical, Security, UpdateRollup, Definition, and Updates.
 
